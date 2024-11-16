@@ -48,7 +48,7 @@ public function postdata(Request $request){
 
 
 
-    public function finditemvariants(){
+    public function findmainitemandvariants(){
 
         $data = XoProducts::select(['baseitemnum as bin', 'id','itemnum as in'])
                             ->distinct('baseitemnum')
