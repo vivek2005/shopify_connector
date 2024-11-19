@@ -70,11 +70,59 @@ public function postdata(Request $request){
         foreach($allIds as $id){
             XoProducts::where(['id' => $id])
                         ->update([
-                            'is_main' => 1
+                            'ismainproduct' => 1
                         ]);
         }
 
     }
 
 
+    public function findvariants(){
+
+        // finding main products 
+        $data = XoProducts::select(['baseitemnum as bin', 'id','itemnum as in'])
+                            ->where('ismainproduct', 1)
+                            // ->distinct('baseitemnum')
+                            ->get()
+                            ->chunk(5) // shopify main product searching chunk size ==> take from env 
+                            ->toarray();
+
+        // dd($data);
+
+        $allIds = [];
+
+        // finding variants of each product 
+        foreach($data as $d){
+            foreach($d as $key=>$product){
+
+                $variants = XoProducts::select(['id', 'baseitemnum as bin', 'itemnum as in'])
+                                        ->where('baseitemnum', $product['bin'])
+                                        ->where('ismainproduct', '!=', 1)
+                                        ->where('itemnum', 'like', $product['bin'].'%' )
+                                        ->get()
+                                        ->toarray();
+
+                echo "<pre>";
+                // print_r($product);
+                print_r($variants);
+                // dd("asdf");
+
+                // $data = XoProducts::select(['baseitemnum as bin', 'id','itemnum as in'])
+                //                     ->where('')
+
+            }
+        }
+
+        // marking all the matching products as main 
+        foreach($allIds as $id){
+            XoProducts::where(['id' => $id])
+                        ->update([
+                            'ismainproduct' => 1
+                        ]);
+        }
+
+    }
+
+
+    
 }

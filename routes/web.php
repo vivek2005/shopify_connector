@@ -12,4 +12,4 @@ Route::get('/', function () {
 Route::post('/postdata', [AjaxController::class, 'postdata'])->name('postdata');
 
 Route::get('/findmainitemandvariants', [AjaxController::class, 'findmainitemandvariants'])->name('findmainitemandvariants');
-Route::get('/findmainitemandvariants', [AjaxController::class, 'finditemvariants'])->name('finditemvariants');
+Route::get('/findvariants', [AjaxController::class, 'findvariants'])->name('findvariants');
